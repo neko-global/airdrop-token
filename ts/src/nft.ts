@@ -26,7 +26,7 @@ export async function airdropNft(
   for (const receiver of receivers) {
     console.log(
       `Success: ${success.length} - Error: ${errors.length} - Loading: ${
-        (success.length + errors.length) / receivers.length
+        ((success.length + errors.length) / receivers.length) * 100
       } %`
     );
     try {
