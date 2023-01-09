@@ -20,7 +20,9 @@ import { loadKeyPair } from "./utils";
 
   const connection = new Connection(process.env.RPC_URL!);
   const receivers = require(process.env.AIRDROP_DATA!);
-  const keypair = loadKeyPair(process.env.PRIVATE_KEY!);
+  console.log(process.env.PRIVATE_KEY_PATH)
+  const keypair = loadKeyPair(process.env.PRIVATE_KEY_PATH!);
+  
 
   let tokenType: TokenType;
   if (process.env.TOKEN_TYPE == "token") {

@@ -39,7 +39,7 @@ export async function airdropToken(
   }
 
   console.log(
-    `Execute airdrop token: Total airdop amount: ${totalTokenAmount} - Token balance: ${tokenBalance} - Estimate Fee: ${estimateFee}`
+    `Execute airdrop token: Total airdop amount: ${totalTokenAmount} - Token balance: ${tokenBalance} - Estimate Fee: ${estimateFee} SOL`
   );
 
   const success: any = [];
@@ -48,7 +48,7 @@ export async function airdropToken(
   for (const receiver of receivers) {
     console.log(
       `Success: ${success.length} - Error: ${errors.length} - Loading: ${
-        (success.length + errors.length) / receivers.length
+        ((success.length + errors.length) / receivers.length) * 100
       } %`
     );
     try {
@@ -70,11 +70,12 @@ export async function airdropToken(
         signature: signature,
         time: new Date().toUTCString(),
       });
-    } catch (error) {
+    } catch (error: any) {
+      console.log(error)
       errors.push({
         receiver: receiver.address,
         amount: receiver.amount,
-        error: error,
+        error: error.toString(),
         time: new Date().toUTCString(),
       });
     }

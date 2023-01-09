@@ -12,7 +12,7 @@ import {
   createAssociatedTokenAccountInstruction,
   createTransferCheckedInstruction,
 } from "@solana/spl-token";
-import { parseUnits } from "@ethersproject/units";
+import { formatUnits, parseUnits } from "@ethersproject/units";
 import type { TransferTokenOrder, TransferNftOrder } from "./types";
 
 export function checkAddress(address: string): boolean {
@@ -32,7 +32,7 @@ export async function getTokenBalance(
 ): Promise<Number> {
   const tokenAccount = await getAssociatedTokenAddress(mintAddress, wallet);
   const info = await getAccount(connection, tokenAccount);
-  return parseUnits(info.amount.toString(), decimals).toNumber();
+  return Number(formatUnits(info.amount.toString(), decimals));
 }
 
 export function loadKeyPair(secretKeyPath: string): Keypair {
@@ -43,7 +43,7 @@ export function loadKeyPair(secretKeyPath: string): Keypair {
 
 export function writeLog(path: string, success: any[], errors: any[]): void {
   if (!fs.existsSync(path)) {
-    fs.mkdirSync(path);
+    fs.mkdirSync(path, { recursive: true });
   }
   fs.writeFile(
     `${path}/success_${new Date().toUTCString()}.json`,
@@ -87,14 +87,15 @@ export async function transferToken(
 
   // create if associate_token_account's receiver is not exist
   const info = await connection.getParsedAccountInfo(toAssociatedTokenAccount);
-  let associatedAcccountInstruction: TransactionInstruction;
+  const associatedAcccountInstruction: TransactionInstruction[] = [];
   if (!info.value) {
-    associatedAcccountInstruction = createAssociatedTokenAccountInstruction(
+    const ins = createAssociatedTokenAccountInstruction(
       order.to,
       toAssociatedTokenAccount,
       order.to,
       mintAddress
     );
+    associatedAcccountInstruction.push(ins);
   }
   const transferTokenRawInstruction = createTransferCheckedInstruction(
     fromAssociatedTokenAccount,
@@ -106,7 +107,7 @@ export async function transferToken(
   );
   //
   const instructions = [
-    associatedAcccountInstruction!,
+    ...associatedAcccountInstruction,
     transferTokenRawInstruction,
   ];
 
@@ -152,13 +153,15 @@ export async function transferNft(
   );
 
   const info = await connection.getParsedAccountInfo(toAssociatedTokenAccount);
-  let associatedAcccountInstruction: TransactionInstruction;
+  const associatedAcccountInstruction: TransactionInstruction[] = [];
   if (!info.value) {
-    associatedAcccountInstruction = createAssociatedTokenAccountInstruction(
-      order.to,
-      toAssociatedTokenAccount,
-      order.to,
-      order.mintAddress
+    associatedAcccountInstruction.push(
+      createAssociatedTokenAccountInstruction(
+        order.to,
+        toAssociatedTokenAccount,
+        order.to,
+        order.mintAddress
+      )
     );
   }
 
@@ -172,7 +175,7 @@ export async function transferNft(
   );
 
   const instructions = [
-    associatedAcccountInstruction!,
+    ...associatedAcccountInstruction,
     transferCheckedInstruction,
   ];
   const tx = new Transaction().add(...instructions);
