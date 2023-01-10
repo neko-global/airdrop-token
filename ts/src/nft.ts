@@ -24,11 +24,6 @@ export async function airdropNft(
   const errors: any = [];
 
   for (const receiver of receivers) {
-    console.log(
-      `Success: ${success.length} - Error: ${errors.length} - Loading: ${
-        ((success.length + errors.length) / receivers.length) * 100
-      } %`
-    );
     try {
       const order: TransferNftOrder = {
         from: keypair.publicKey,
@@ -41,13 +36,21 @@ export async function airdropNft(
         signature: signature,
         time: new Date().toUTCString(),
       });
-    } catch (error) {
+    } catch (error: any) {
       errors.push({
         receiver: receiver.address,
-        error: error,
+        error: error.toString(),
         time: new Date().toUTCString(),
       });
     }
+
+    console.log(
+      `Success: ${success.length} - Error: ${
+        errors.length
+      } - Loading: ${Math.floor(
+        ((success.length + errors.length) / receivers.length) * 100
+      )} %`
+    );
   }
   // logging
   writeLog("./logs/nft", success, errors);

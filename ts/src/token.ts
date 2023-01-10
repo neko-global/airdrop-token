@@ -46,11 +46,6 @@ export async function airdropToken(
   const errors: any = [];
 
   for (const receiver of receivers) {
-    console.log(
-      `Success: ${success.length} - Error: ${errors.length} - Loading: ${
-        ((success.length + errors.length) / receivers.length) * 100
-      } %`
-    );
     try {
       const order: TransferTokenOrder = {
         from: keypair.publicKey,
@@ -71,7 +66,6 @@ export async function airdropToken(
         time: new Date().toUTCString(),
       });
     } catch (error: any) {
-      console.log(error)
       errors.push({
         receiver: receiver.address,
         amount: receiver.amount,
@@ -79,6 +73,13 @@ export async function airdropToken(
         time: new Date().toUTCString(),
       });
     }
+    console.log(
+      `Success: ${success.length} - Error: ${
+        errors.length
+      } - Loading: ${Math.floor(
+        ((success.length + errors.length) / receivers.length) * 100
+      )} %`
+    );
   }
 
   // logging
