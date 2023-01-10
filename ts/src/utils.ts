@@ -13,7 +13,12 @@ import {
   createTransferCheckedInstruction,
 } from "@solana/spl-token";
 import { formatUnits, parseUnits } from "@ethersproject/units";
-import type { TransferTokenOrder, TransferNftOrder } from "./types";
+import {
+  TransferTokenOrder,
+  TransferNftOrder,
+  TransferTokenData,
+  TokenType,
+} from "./types";
 
 export function checkAddress(address: string): boolean {
   try {
@@ -60,6 +65,41 @@ export function writeLog(path: string, success: any[], errors: any[]): void {
       console.log("write errors log");
     }
   );
+}
+
+export function validateJsonData(data: any[], tokenType: TokenType): boolean {
+  let result: boolean = true;
+  switch (tokenType) {
+    case TokenType.TOKEN: {
+      data.forEach((value) => {
+        if (
+          typeof value.address !== "string" ||
+          typeof value.amount !== "number"
+        ) {
+          result = false;
+          return;
+        }
+      });
+      break;
+    }
+    case TokenType.NFT: {
+      data.forEach((value) => {
+        if (
+          typeof value.address !== "string" ||
+          typeof value.mint !== "string"
+        ) {
+          result = false;
+          return;
+        }
+      });
+      break;
+    }
+    default: {
+      throw new Error("Invalid token type");
+    }
+  }
+
+  return result;
 }
 
 /**
@@ -157,7 +197,7 @@ export async function transferNft(
   if (!info.value) {
     associatedAcccountInstruction.push(
       createAssociatedTokenAccountInstruction(
-        order.to,
+        keypair.publicKey,
         toAssociatedTokenAccount,
         order.to,
         order.mintAddress
@@ -183,8 +223,6 @@ export async function transferNft(
   tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
   // sign transaction
   tx.sign(keypair);
-  const signature = connection.sendRawTransaction(tx.serialize(), {
-    skipPreflight: false,
-  });
+  const signature = connection.sendRawTransaction(tx.serialize());
   return signature;
 }
