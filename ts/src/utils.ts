@@ -50,21 +50,26 @@ export function writeLog(path: string, success: any[], errors: any[]): void {
   if (!fs.existsSync(path)) {
     fs.mkdirSync(path, { recursive: true });
   }
-  fs.writeFile(
-    `${path}/success_${new Date().toUTCString()}.json`,
-    JSON.stringify(success),
-    () => {
-      console.log("write success log");
-    }
-  );
 
-  fs.writeFile(
-    `${path}/errors_${new Date().toUTCString()}.json`,
-    JSON.stringify(errors),
-    () => {
-      console.log("write errors log");
-    }
-  );
+  if (success.length > 0) {
+    fs.writeFile(
+      `${path}/success_${new Date().toUTCString()}.json`,
+      JSON.stringify(success),
+      () => {
+        console.log("write success log");
+      }
+    );
+  }
+
+  if (errors.length > 0) {
+    fs.writeFile(
+      `${path}/errors_${new Date().toUTCString()}.json`,
+      JSON.stringify(errors),
+      () => {
+        console.log("write errors log");
+      }
+    );
+  }
 }
 
 export function validateJsonData(data: any[], tokenType: TokenType): boolean {

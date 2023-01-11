@@ -14,12 +14,20 @@ export async function airdropNft(
 ): Promise<void> {
   const solBalance =
     (await connection.getBalance(keypair.publicKey)) / LAMPORTS_PER_SOL;
-  if (solBalance < receivers.length * 0.0001) {
+    const estimateFee = receivers.length * 0.002;
+  if (solBalance < estimateFee) {
     console.warn(
       `Currently SOL balance maybe not enough to execute all airdrop transactions`
     );
   }
-
+  process.stdout.write(`\x1b[33m Receivers: ${receivers.length} \x1b[1m`);
+  process.stdout.write(`\x1b[33m Estimate Fee: ${estimateFee} SOL \x1b[1m`);
+  console.log();
+  console.log();
+  console.log(`Time: ${new Date().toISOString()}`);
+  console.log();
+  console.log();
+  
   const success: any = [];
   const errors: any = [];
 
@@ -44,12 +52,14 @@ export async function airdropNft(
       });
     }
 
-    console.log(
-      `Success: ${success.length} - Error: ${
-        errors.length
-      } - Loading: ${Math.floor(
+    process.stdout.write(
+      `AIRDROP NFT: \x1b[32m ✅: ${success.length} ( ${Math.floor(
+        (success.length / receivers.length) * 100
+      )} %) - 🐛: ${errors.length} ( ${Math.floor(
+        (errors.length / receivers.length) * 100
+      )} %) - 🚀 ${Math.floor(
         ((success.length + errors.length) / receivers.length) * 100
-      )} %`
+      )} % \r \x1b[1m`
     );
   }
   // logging

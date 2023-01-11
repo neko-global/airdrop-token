@@ -25,7 +25,7 @@ export async function airdropToken(
   );
   let totalTokenAmount = 0;
   receivers.filter((item) => (totalTokenAmount += item.amount));
-  const estimateFee = receivers.length * 0.0001;
+  const estimateFee = receivers.length * 0.001;
   if (solBalance < estimateFee) {
     console.warn(
       `Currently SOL balance maybe not enough to execute all airdrop transactions`
@@ -38,10 +38,17 @@ export async function airdropToken(
     );
   }
 
-  console.log(
-    `Execute airdrop token: Total airdop amount: ${totalTokenAmount} - Token balance: ${tokenBalance} - Estimate Fee: ${estimateFee} SOL`
-  );
+  process.stdout.write(`\x1b[33m Receivers: ${receivers.length} \x1b[1m`);
+  process.stdout.write(`\x1b[33m Total Amount: ${totalTokenAmount} \x1b[1m`);
+  process.stdout.write(`\x1b[33m Current Balance: ${tokenBalance} \x1b[1m`);
+  process.stdout.write(`\x1b[33m Estimate Fee: ${estimateFee} SOL \x1b[1m`);
 
+  console.log();
+  console.log();
+  console.log(`Time: ${new Date().toISOString()}`);
+
+  console.log();
+  console.log();
   const success: any = [];
   const errors: any = [];
 
@@ -73,12 +80,14 @@ export async function airdropToken(
         time: new Date().toUTCString(),
       });
     }
-    console.log(
-      `Success: ${success.length} - Error: ${
-        errors.length
-      } - Loading: ${Math.floor(
+    process.stdout.write(
+      `AIRDROP TOKEN: \x1b[32m ✅: ${success.length} ( ${Math.floor(
+        (success.length / receivers.length) * 100
+      )} %) - 🐛: ${errors.length} ( ${Math.floor(
+        (errors.length / receivers.length) * 100
+      )} %) - 🚀 ${Math.floor(
         ((success.length + errors.length) / receivers.length) * 100
-      )} %`
+      )} % \r \x1b[1m`
     );
   }
 

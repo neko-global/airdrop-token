@@ -10,9 +10,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@solana/web3.js": "^1.73.0",
     "@ethersproject/units": "^5.7.0",
-		"@solana/spl-token": "^0.3.6",
-		"dotenv": "^16.0.3"
+    "@solana/spl-token": "^0.3.6",
+    "@solana/web3.js": "^1.73.0",
+    "ajv": "^8.12.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "dotenv": "^16.0.3",
+    "typescript-json-validator": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18"
   }
 }
