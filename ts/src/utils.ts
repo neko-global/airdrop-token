@@ -50,10 +50,11 @@ export function writeLog(path: string, success: any[], errors: any[]): void {
   if (!fs.existsSync(path)) {
     fs.mkdirSync(path, { recursive: true });
   }
+  const date = new Date();
 
   if (success.length > 0) {
     fs.writeFile(
-      `${path}/success_${new Date().toUTCString()}.json`,
+      `${path}/success_${date.toLocaleTimeString()}.json`,
       JSON.stringify(success),
       () => {
         console.log("write success log");
@@ -63,7 +64,7 @@ export function writeLog(path: string, success: any[], errors: any[]): void {
 
   if (errors.length > 0) {
     fs.writeFile(
-      `${path}/errors_${new Date().toUTCString()}.json`,
+      `${path}/errors_${date.toLocaleTimeString()}.json`,
       JSON.stringify(errors),
       () => {
         console.log("write errors log");
@@ -194,7 +195,8 @@ export async function transferNft(
   // Get the derived address of the destination wallet which will hold the custom token
   const toAssociatedTokenAccount = await getAssociatedTokenAddress(
     order.mintAddress,
-    order.to
+    order.to,
+    true
   );
 
   const info = await connection.getParsedAccountInfo(toAssociatedTokenAccount);

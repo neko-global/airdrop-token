@@ -14,7 +14,7 @@ export async function airdropNft(
 ): Promise<void> {
   const solBalance =
     (await connection.getBalance(keypair.publicKey)) / LAMPORTS_PER_SOL;
-    const estimateFee = receivers.length * 0.002;
+  const estimateFee = receivers.length * 0.002;
   if (solBalance < estimateFee) {
     console.warn(
       `Currently SOL balance maybe not enough to execute all airdrop transactions`
@@ -22,12 +22,11 @@ export async function airdropNft(
   }
   process.stdout.write(`\x1b[33m Receivers: ${receivers.length} \x1b[1m`);
   process.stdout.write(`\x1b[33m Estimate Fee: ${estimateFee} SOL \x1b[1m`);
+
   console.log();
+  console.log(`Time: ${new Date().toLocaleString()}`);
   console.log();
-  console.log(`Time: ${new Date().toISOString()}`);
-  console.log();
-  console.log();
-  
+
   const success: any = [];
   const errors: any = [];
 
@@ -41,14 +40,16 @@ export async function airdropNft(
       const signature = await transferNft(connection, order, keypair);
       success.push({
         receiver: receiver.address,
+        mint: receiver.mint,
         signature: signature,
-        time: new Date().toUTCString(),
+        time: new Date().toLocaleString(),
       });
     } catch (error: any) {
       errors.push({
         receiver: receiver.address,
+        mint: receiver.mint,
         error: error.toString(),
-        time: new Date().toUTCString(),
+        time: new Date().toLocaleString(),
       });
     }
 

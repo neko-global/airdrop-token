@@ -44,11 +44,9 @@ export async function airdropToken(
   process.stdout.write(`\x1b[33m Estimate Fee: ${estimateFee} SOL \x1b[1m`);
 
   console.log();
+  console.log(`Time: ${new Date().toLocaleString()}`);
   console.log();
-  console.log(`Time: ${new Date().toISOString()}`);
-
-  console.log();
-  console.log();
+  
   const success: any = [];
   const errors: any = [];
 
@@ -70,14 +68,14 @@ export async function airdropToken(
         receiver: receiver.address,
         amount: receiver.amount,
         signature: signature,
-        time: new Date().toUTCString(),
+        time: new Date().toLocaleString(),
       });
     } catch (error: any) {
       errors.push({
         receiver: receiver.address,
         amount: receiver.amount,
         error: error.toString(),
-        time: new Date().toUTCString(),
+        time: new Date().toLocaleString(),
       });
     }
     process.stdout.write(
