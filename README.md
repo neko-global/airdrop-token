@@ -1,7 +1,7 @@
 # Neko Airdrop
 Tool support airdrop token
 
-TS OR RUST
+TS || RUST
 ======
   <!--ts-->
    * [Typescript](#typescript)
@@ -24,7 +24,7 @@ TS OR RUST
 
   ## Config
   
-  Data follow by two [interface](https://github.com/neko-global/airdrop-token/blob/main/ts/src/types.ts#L15-L23)
+  Data follow by [interface](https://github.com/neko-global/airdrop-token/blob/main/ts/src/types.ts#L15-L23)
 
   ### Airdrop Nft
   
