@@ -1,6 +1,16 @@
 # airdrop-token
 Tool support airdrop token
 
+TS OR RUST
+======
+  <!--ts-->
+   * [Typescript](#typescript)
+   * [Rust](#rust)
+
+<!--te-->
+
+  
+
 # Typescript
   ## Install
       cd airdrop-token/ts
@@ -71,4 +81,4 @@ Tool support airdrop token
   ```
   
 # Rust
-  TODO
+  - TODO
