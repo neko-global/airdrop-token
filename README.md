@@ -17,7 +17,7 @@ TS OR RUST
       pnpm install
     
   Note:
-    If you have Node 16+, you can [activate PNPM with Corepack](https://pnpm.io/installation#using-corepack):
+    Install `pnpm` if not available and If you have Node 16+, you can [activate PNPM with Corepack](https://pnpm.io/installation#using-corepack):
     
       corepack enable
       corepack prepare pnpm@`npm info pnpm --json | jq -r .version` --activate
