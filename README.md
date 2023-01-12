@@ -1,4 +1,4 @@
-# airdrop-token
+# Neko Airdrop
 Tool support airdrop token
 
 TS OR RUST
