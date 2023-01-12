@@ -3,7 +3,7 @@ import { config } from "dotenv";
 import { airdropNft } from "./nft";
 import { airdropToken } from "./token";
 import { TokenType } from "./types";
-import { loadKeyPair, validateJsonData } from "./utils";
+import { loadKeyPair, validAddress, validateJsonData } from "./utils";
 
 (async () => {
   config({ path: "../.env" });
@@ -11,6 +11,9 @@ import { loadKeyPair, validateJsonData } from "./utils";
   const connection = new Connection(process.env.RPC_URL!);
   const receivers: any[] = require(process.env.AIRDROP_DATA!);
   const keypair = loadKeyPair(process.env.PRIVATE_KEY_PATH!);
+
+  // check valid address
+  validAddress(receivers);
 
   if (process.env.TOKEN_TYPE == "token") {
     if (process.env.MINT_ADDRESS) {
@@ -20,7 +23,6 @@ import { loadKeyPair, validateJsonData } from "./utils";
       if (!isValidJson) {
         throw new Error(`Data receiver invalid format with airdrop token`);
       }
-
       // execuate airdrop
       await airdropToken(connection, receivers, mintAddress, keypair);
     } else {

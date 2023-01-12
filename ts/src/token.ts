@@ -38,14 +38,11 @@ export async function airdropToken(
     );
   }
 
-  process.stdout.write(`\x1b[33m Receivers: ${receivers.length} \x1b[1m`);
-  process.stdout.write(`\x1b[33m Total Amount: ${totalTokenAmount} \x1b[1m`);
-  process.stdout.write(`\x1b[33m Current Balance: ${tokenBalance} \x1b[1m`);
-  process.stdout.write(`\x1b[33m Estimate Fee: ${estimateFee} SOL \x1b[1m`);
-
-  console.log();
-  console.log(`Time: ${new Date().toLocaleString()}`);
-  console.log();
+  process.stdout.write(`\x1b[33m Receivers: ${receivers.length} \x1b[1m \n`);
+  process.stdout.write(`\x1b[33m Total Amount: ${totalTokenAmount} \x1b[1m \n`);
+  process.stdout.write(`\x1b[33m Current Balance: ${tokenBalance} \x1b[1m \n`);
+  process.stdout.write(`\x1b[33m Estimate Fee: ${estimateFee} SOL \x1b[1m \n`);
+  process.stdout.write(`\x1b[34m Time: ${new Date().toLocaleString()} \x1b[1m \n`);
   
   const success: any = [];
   const errors: any = [];

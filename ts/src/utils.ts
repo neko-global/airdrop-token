@@ -18,6 +18,7 @@ import {
   TransferNftOrder,
   TransferTokenData,
   TokenType,
+  TransferNftData,
 } from "./types";
 
 export function checkAddress(address: string): boolean {
@@ -27,6 +28,26 @@ export function checkAddress(address: string): boolean {
   } catch (error) {
     return false;
   }
+}
+
+export function validAddress(
+  data: TransferTokenData[] | TransferNftData[]
+): void {
+  process.stdout.write(`\x1b[31m Total check ${data.length} addresses \x1b[1m \n`);
+  const errors: string[] = [];
+  data.forEach((item) => {
+    if (!checkAddress(item.address)) {
+      errors.push(item.address);
+    }
+  });
+
+  if (errors.length > 0) {
+    process.stdout.write(`\x1b[31m ${errors.length} Errors \x1b[1m \n`);
+    process.stdout.write(`\x1b[31m Errors address: ${errors} \x1b[1m \n`);
+    throw new Error(`Address Error: Some address invalid`);
+  }
+
+  process.stdout.write(`\x1b[32m ${data.length} addresses valid \x1b[1m \n`);
 }
 
 export async function getTokenBalance(
